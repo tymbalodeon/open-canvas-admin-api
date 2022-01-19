@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "open-canvas-admin-api"
+version = "0.1.0"
+description = "Site for managing UPenn Open Canvas instance"
+authors = ["Ben Rosen <benrosen@upenn.edu>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+black = "^21.12b0"
+flake8 = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
