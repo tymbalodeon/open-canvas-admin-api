@@ -3,6 +3,7 @@ name = "open-canvas-admin-api"
 version = "0.1.0"
 description = "Site for managing UPenn Open Canvas instance"
 authors = ["Ben Rosen <benrosen@upenn.edu>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -13,7 +14,14 @@ psycopg2 = "^2.9.3"
 isort = "^5.10.1"
 black = "^21.12b0"
 flake8 = "^4.0.1"
+mypy = "^0.931"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+experimental_string_processing = true
+
+[tool.isort]
+profile = "black"

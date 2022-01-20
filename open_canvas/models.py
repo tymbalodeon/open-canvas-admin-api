@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import CASCADE, CharField, Model, OneToOneField, ManyToManyField
+from django.db.models import CASCADE, CharField, ManyToManyField, Model, OneToOneField
 
 
 class CanvasUser(Model):
