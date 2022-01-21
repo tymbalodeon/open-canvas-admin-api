@@ -18,7 +18,7 @@ _Instructions are based on macOS installation. Details may vary on your machine.
 [opencanvas]
 host=localhost
 user=user
-dbname=dbname
+dbname=opencanvas
 port=5432
 
 ```
