@@ -47,10 +47,7 @@ WSGI_APPLICATION = "open_canvas_admin_api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        # "OPTIONS": {
-        #     "service": "my_service",
-        #     "passfile": ".my_pass",
-        # },
+        "OPTIONS": {"service": "opencanvas"},
     }
 }
 AUTH_PASSWORD_VALIDATORS = [

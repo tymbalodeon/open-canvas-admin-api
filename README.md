@@ -12,10 +12,13 @@ _Instructions are based on macOS installation. Details may vary on your machine.
 - `echo 'export PGDATA="/usr/local/var/postgres"' >> ~/.zshrc`
 - `pg_ctl start`
 - `createdb opencanvas`
+- create the file `~/.pg_service.confg` containing:
 
-## Dev Commands
+```ini
+[opencanvas]
+host=localhost
+user=user
+dbname=dbname
+port=5432
 
-# PostgreSQL
-
-- Open interactive postgres shell: `psql opencanvas` (`pg_ctl start` if necessary)
-- Quit shell: `\q`
+```
