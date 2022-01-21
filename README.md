@@ -2,6 +2,8 @@
 
 ## Installation
 
+- `poetry install`
+
 # PostgreSQL
 
 _Instructions are based on macOS installation. Details may vary on your machine._

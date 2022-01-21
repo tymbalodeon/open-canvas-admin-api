@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 
 config = ConfigParser()
-config.read("config/config.ini")
+config.read("open_canvas/config/config.ini")
 
 DJANGO_SECTION = "django"
 DEBUG_VALUE = config.getboolean(DJANGO_SECTION, "debug", fallback=False)

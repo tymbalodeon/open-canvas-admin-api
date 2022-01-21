@@ -4,10 +4,10 @@ from pathlib import Path
 
 import cx_Oracle
 
-from open_canvas.config import DEBUG_VALUE, LIB_DIR, SECRET_KEY_VALUE
+from open_canvas.config.config import DEBUG_VALUE, LIB_DIR, SECRET_KEY_VALUE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = "u^g6o1ty0+3a!vt5l+_!qk2sh16#i(w317)tq&dzrt3l--nlp_"
+SECRET_KEY = SECRET_KEY_VALUE
 DEBUG = DEBUG_VALUE
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [

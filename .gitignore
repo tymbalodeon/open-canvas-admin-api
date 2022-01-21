@@ -1,2 +1,3 @@
 .DS_Store
 open_canvas/config/config.ini
+__pycache__/
