@@ -1,6 +1,6 @@
 from open_canvas.canvas.api import get_account
 
-from .data_warehouse import get_data_warehouse_cursor
+from data_warehouse import get_data_warehouse_cursor
 
 
 def get_penn_id_from_penn_key(penn_key):
