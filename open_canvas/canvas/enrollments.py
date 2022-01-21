@@ -1,15 +1,17 @@
-from .enroll import find_user_by_email
+from open_canvas.canvas.api import get_account, get_canvas
 
-ACCOUNT = 1
-UNENROLL_TASKS = {"conclude", "delete", "deactivate", "inactivate"}
+from .constants import UNENROLL_TASKS
+from .users import find_user_by_email
+
 COURSES_CACHE = {}
 
 
-def get_canvas_section_or_course(canvas, canvas_id, section):
+def get_canvas_section_or_course(canvas_id, section, test=False):
     if canvas_id in COURSES_CACHE and "section" in COURSES_CACHE[canvas_id]:
         return COURSES_CACHE[canvas_id]["section"]
     else:
         try:
+            canvas = get_canvas(test)
             canvas_section = (
                 canvas.get_section(canvas_id)
                 if section
@@ -22,8 +24,9 @@ def get_canvas_section_or_course(canvas, canvas_id, section):
         return canvas_section
 
 
-def get_enrollment_login(enrollment):
-    user = CANVAS.get_user(enrollment.user["id"])
+def get_enrollment_login(enrollment, test=False):
+    canvas = get_canvas(test)
+    user = canvas.get_user(enrollment.user["id"])
     return {
         "enrollment": enrollment,
         "login_id": user.login_id.lower() if user.login_id else "",
@@ -31,7 +34,7 @@ def get_enrollment_login(enrollment):
     }
 
 
-def get_enrollments(canvas, canvas_id, canvas_section):
+def get_enrollments(canvas_id, canvas_section, test=False):
     if canvas_id in COURSES_CACHE and "enrollments" in COURSES_CACHE[canvas_id]:
         return COURSES_CACHE[canvas_id]["enrollments"]
     else:
@@ -40,7 +43,7 @@ def get_enrollments(canvas, canvas_id, canvas_section):
                 enrollment for enrollment in canvas_section.get_enrollments()
             ]
             enrollments = [
-                get_enrollment_login(enrollment) for enrollment in enrollments
+                get_enrollment_login(enrollment, test) for enrollment in enrollments
             ]
         except Exception:
             enrollments = []
@@ -61,9 +64,9 @@ def get_enrollment_by_email(email, enrollments):
     )
 
 
-def enroll_user(canvas, email, canvas_id, section, notify):
-    user = find_user_by_email(canvas.get_account(ACCOUNT), email)
-    canvas_section = get_canvas_section_or_course(canvas, canvas_id, section)
+def enroll_user(email, canvas_id, section, notify, test=False):
+    user = find_user_by_email(get_account(test), email)
+    canvas_section = get_canvas_section_or_course(canvas_id, section, test)
     if canvas_section == "course not found":
         return canvas_section, canvas_id, ""
     try:
@@ -77,13 +80,13 @@ def enroll_user(canvas, email, canvas_id, section, notify):
         return "failed to enroll", canvas_section, error_message
 
 
-def unenroll_user(canvas, email, canvas_id, section, task="conclude"):
+def unenroll_user(email, canvas_id, section, task="conclude", test=False):
     task = task.lower() if task in UNENROLL_TASKS else "conclude"
-    canvas_section = get_canvas_section_or_course(canvas, canvas_id, section)
+    canvas_section = get_canvas_section_or_course(canvas_id, section, test)
     if not canvas_section or canvas_section == "course not found":
         return canvas_section, canvas_id
     try:
-        enrollments = get_enrollments(canvas, canvas_id, canvas_section)
+        enrollments = get_enrollments(canvas_id, canvas_section, test)
         enrollment = get_enrollment_by_email(email, enrollments)
     except Exception:
         enrollment = None

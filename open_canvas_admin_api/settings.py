@@ -1,8 +1,14 @@
 import os
+import platform
+from pathlib import Path
+
+import cx_Oracle
+
+from open_canvas.config import DEBUG_VALUE, LIB_DIR, SECRET_KEY_VALUE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "u^g6o1ty0+3a!vt5l+_!qk2sh16#i(w317)tq&dzrt3l--nlp_"
-DEBUG = True
+DEBUG = DEBUG_VALUE
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -69,3 +75,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = "/static/"
+if DEBUG and platform.system() == "Darwin":
+    lib_dir = Path.home() / LIB_DIR
+    cx_Oracle.init_oracle_client(lib_dir=str(lib_dir))
