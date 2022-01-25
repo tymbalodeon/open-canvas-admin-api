@@ -42,7 +42,7 @@ run: ## Run the app
 	$(MANAGE) runserver
 
 shell: ## Open an app-aware python shell
-	$(MANAGE) shell_plus
+	$(MANAGE) shell_plus --bpython
 
 superuser: ## Create a user with admin privileges
 	$(MANAGE) createsuperuser
