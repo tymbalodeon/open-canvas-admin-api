@@ -8,11 +8,15 @@ from django.db.models import (
     CASCADE,
 )
 
+UNPUBLISHED = "unpublished"
+AVAILABLE = "available"
+COMPLETED = "completed"
+DELETED = "deleted"
 WORKFLOW_STATES = [
-    ("UNPUBLISHED", "unpublished"),
-    ("AVAILABLE", "available"),
-    ("COMPLETED", "completed"),
-    ("DELETED", "deleted"),
+    (UNPUBLISHED, "unpublished"),
+    (AVAILABLE, "available"),
+    (COMPLETED, "completed"),
+    (DELETED, "deleted"),
 ]
 
 
