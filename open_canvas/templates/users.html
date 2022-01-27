@@ -1,0 +1,37 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Open Canvas Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h1>Canvas Users</h1>
+        <ul>
+            {% for user in users %}
+                <li>
+                    User: {{ user.user }}
+                    <ul>
+                        <li>First name: {{ user.user.first_name }}</li>
+                        <li>Last name: {{ user.user.last_name }}</li>
+                        <li>Full name: {{ user.full_name }}</li>
+                        <li>Sortable name: {{ user.sortable_name }}</li>
+                        <li>Email: {{ user.user.email }}</li>
+                        <li>Penn ID: {{ user.user.penn_id }}</li>
+                        <li>Pennkey: {{ user.user.penn_key }}</li>
+                        <li>
+                            Courses:
+                            <ul>
+                                {% for course in user.courses %}
+                                    <li>{{ course }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

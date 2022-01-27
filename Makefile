@@ -1,5 +1,5 @@
-MANAGE = python manage.py
 POETRY = poetry run
+MANAGE = $(POETRY) python manage.py
 LOCAL_PORT = http://localhost:8000
 
 all: help

@@ -42,8 +42,8 @@ class CanvasUser(Model):
     last_name = CharField(max_length=255)
     email = EmailField(primary_key=True)
     penn_id = IntegerField(unique=True, blank=True, null=True)
-    penn_key = CharField(max_length=10, unique=True, blank=True)
-    canvas_id = IntegerField(unique=True, blank=True)
+    penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
+    canvas_id = IntegerField(unique=True, blank=True, null=True)
     courses = ManyToManyField(CanvasSite, related_name="users", blank=True)
 
     def __str__(self):
