@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from .models import CanvasUser, CanvasSite
 
-# Create your views here.
+
+def view_demo(request):
+    users = CanvasUser.objects.all()
+    sites = CanvasSite.objects.all()
+    return render(request, "demo.html", {"users": users, "sites": sites})
