@@ -3,21 +3,7 @@
     <h1>Canvas Users</h1>
     <ul>
         {% for user in users %}
-            <li>
-                <a href="{% url "user-detail" user.canvas_id %}">
-                    User: {{ user }}
-                </a>
-                <ul>
-                    <li>First name: {{ user.first_name }}</li>
-                    <li>Last name: {{ user.last_name }}</li>
-                    <li>Full name: {{ user.full_name }}</li>
-                    <li>Sortable name: {{ user.sortable_name }}</li>
-                    <li>Email: {{ user.email }}</li>
-                    <li>Penn ID: {{ user.penn_id }}</li>
-                    <li>Pennkey: {{ user.penn_key }}</li>
-                    <li>Canvas ID: {{ user.canvas_id }}</li>
-                </ul>
-            </li>
+            {% include "canvasuser.html" with user=user %}
         {% endfor %}
     </ul>
 {% endblock %}

@@ -1,0 +1,28 @@
+<li>
+    {% block user_header %}
+        <a href="{% url "user-detail" user.canvas_id %}">
+            User: {{ user }}
+        </a>
+    {% endblock %}
+    <ul>
+        <li>First name: {{ user.first_name }}</li>
+        <li>Last name: {{ user.last_name }}</li>
+        <li>Full name: {{ user.full_name }}</li>
+        <li>Sortable name: {{ user.sortable_name }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>Penn ID: {{ user.penn_id }}</li>
+        <li>Pennkey: {{ user.penn_key }}</li>
+        <li>
+            Courses:
+            {% if user.courses.all %}
+                <ul>
+                    {% for course in user.courses.all %}
+                        <a href="{% url "course-detail" course.canvas_id %}">
+                            <li>{{ course }}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    </ul>
+</li>

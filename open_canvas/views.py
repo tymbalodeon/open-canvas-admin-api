@@ -6,13 +6,9 @@ from .models import CanvasSite, CanvasUser
 
 class UserDetailView(DetailView):
     model = CanvasUser
+    context_object_name = "user"
     slug_field = "canvas_id"
     template_name = "canvasuser_detail.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["courses"] = self.object.courses.all()
-        return context
 
 
 class UserListView(ListView):
@@ -24,12 +20,8 @@ class UserListView(ListView):
 
 class CourseDetailView(DetailView):
     model = CanvasSite
+    context_object_name = "site"
     template_name = "canvassite_detail.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["users"] = self.object.users.all()
-        return context
 
 
 class CourseListView(ListView):

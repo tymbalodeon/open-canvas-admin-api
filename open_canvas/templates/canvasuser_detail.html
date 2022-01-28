@@ -1,27 +1,6 @@
 {% extends "base_generic.html" %}
 {% block content %}
-    <li>
-        User: {{ canvasuser }}
-        <ul>
-            <li>First name: {{ canvasuser.first_name }}</li>
-            <li>Last name: {{ canvasuser.last_name }}</li>
-            <li>Full name: {{ canvasuser.full_name }}</li>
-            <li>Sortable name: {{ canvasuser.sortable_name }}</li>
-            <li>Email: {{ canvasuser.email }}</li>
-            <li>Penn ID: {{ canvasuser.penn_id }}</li>
-            <li>Pennkey: {{ canvasuser.penn_key }}</li>
-            <li>
-                Courses:
-                {% if courses %}
-                    <ul>
-                        {% for course in courses %}
-                            <a href="{% url "course-detail" course.canvas_id %}">
-                                <li>{{ course }}</li>
-                            </a>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        </ul>
-    </li>
+    <ul>
+        {% include "canvasuser.html" with user=user %}
+    </ul>
 {% endblock %}
