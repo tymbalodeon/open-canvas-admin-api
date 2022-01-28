@@ -1,6 +1,6 @@
 from django.urls import path
 
-from open_canvas.views import (
+from .views import (
     UserListView,
     CourseListView,
     UserDetailView,

@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Canvas Users</h1>
     <ul>
-        {% for user in object_list %}
+        {% for user in users %}
             <li>
                 <a href="{% url "user-detail" user.canvas_id %}">
                     User: {{ user }}

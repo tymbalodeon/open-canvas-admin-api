@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Canvas Sites</h1>
     <ul>
-        {% for site in object_list %}
+        {% for site in sites %}
             <li>
                 <a href="{% url "course-detail" site.canvas_id %}">
                     Course: {{ site }}

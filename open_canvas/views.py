@@ -1,5 +1,5 @@
-from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from .models import CanvasSite, CanvasUser
 
@@ -17,6 +17,7 @@ class UserDetailView(DetailView):
 
 class UserListView(ListView):
     model = CanvasUser
+    context_object_name = "users"
     paginate_by = 100
     template_name = "canvasuser_list.html"
 
@@ -33,5 +34,6 @@ class CourseDetailView(DetailView):
 
 class CourseListView(ListView):
     model = CanvasSite
+    context_object_name = "sites"
     paginate_by = 100
     template_name = "canvassite_list.html"
