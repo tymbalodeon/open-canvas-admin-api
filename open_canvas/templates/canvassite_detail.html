@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    <ul>
+        <li>
+            Course: {{ canvassite }}
+            <ul>
+                <li>Canvas ID: {{ canvassite.canvas_id }}</li>
+                <li>Name: {{ canvassite.name }}</li>
+                <li>Course code: {{ canvassite.course_code }}</li>
+                <li>Workflow state: {{ canvassite.workflow_state }}</li>
+                <li>
+                    Enrollments:
+                    {% if users %}
+                        <ul>
+                            {% for user in users %}
+                                <a href="{% url "user-detail" user.canvas_id %}">
+                                    <li>{{ user }}</li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endblock %}

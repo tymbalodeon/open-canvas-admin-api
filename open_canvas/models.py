@@ -1,11 +1,11 @@
 from django.db.models import (
+    CASCADE,
     CharField,
     EmailField,
+    ForeignKey,
     IntegerField,
     ManyToManyField,
     Model,
-    ForeignKey,
-    CASCADE,
 )
 
 UNPUBLISHED = "UNPUBLISHED"
@@ -23,11 +23,12 @@ WORKFLOW_STATES = [
 class CanvasSite(Model):
     canvas_id = IntegerField(primary_key=True)
     name = CharField(max_length=255)
-    course_code = CharField(max_length=50, blank=True)
+    course_code = CharField(max_length=50, blank=True, null=True)
     workflow_state = CharField(max_length=11, choices=WORKFLOW_STATES)
 
     def __str__(self):
-        return f'{self.course_code} "{self.name}" ({self.canvas_id})'
+        course_code = f"{self.course_code} " if self.course_code else ""
+        return f'{course_code}"{self.name}" ({self.canvas_id})'
 
 
 class CanvasSection(Model):
@@ -43,14 +44,16 @@ class CanvasUser(Model):
     email = EmailField(primary_key=True)
     penn_id = IntegerField(unique=True, blank=True, null=True)
     penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
-    canvas_id = IntegerField(unique=True, blank=True, null=True)
+    canvas_id = IntegerField(unique=True)
     courses = ManyToManyField(CanvasSite, related_name="users", blank=True)
 
     def __str__(self):
-        return f"{self.get_full_name()} ({self.email})"
+        return f"{self.full_name} ({self.email})"
 
-    def get_full_name(self):
+    @property
+    def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_sortable_name(self):
+    @property
+    def sortable_name(self):
         return f"{self.last_name}, {self.first_name}"

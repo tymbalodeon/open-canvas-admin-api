@@ -12,7 +12,7 @@ _Instructions are based on macOS installation. Details may vary on your machine.
 - `echo 'export PGDATA="/usr/local/var/postgres"' >> ~/.zshrc`
 - `pg_ctl start`
 - `createdb opencanvas`
-- create the file `~/.pg_service.confg` containing:
+- create the file `~/.pg_service.conf` containing:
 
 ```ini
 [opencanvas]
@@ -20,5 +20,4 @@ host=localhost
 user=user
 dbname=opencanvas
 port=5432
-
 ```

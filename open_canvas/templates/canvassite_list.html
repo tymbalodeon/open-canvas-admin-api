@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Canvas Sites</h1>
+    <ul>
+        {% for site in object_list %}
+            <li>
+                <a href="{% url "course-detail" site.canvas_id %}">
+                    Course: {{ site }}
+                </a>
+                <ul>
+                    <li>Canvas ID: {{ site.canvas_id }}</li>
+                    <li>Name: {{ site.name }}</li>
+                    <li>Course code: {{ site.course_code }}</li>
+                    <li>Workflow state: {{ site.workflow_state }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

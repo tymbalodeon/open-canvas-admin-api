@@ -1,22 +1,37 @@
-from django.shortcuts import render
-from .models import CanvasUser, CanvasSite
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
+from .models import CanvasSite, CanvasUser
 
 
-def view_users(request):
-    users = CanvasUser.objects.all()
-    users = [
-        {
-            "user": user,
-            "full_name": user.get_full_name(),
-            "sortable_name": user.get_sortable_name(),
-            "courses": user.courses.all(),
-        }
-        for user in users
-    ]
-    return render(request, "users.html", {"users": users})
+class UserDetailView(DetailView):
+    model = CanvasUser
+    slug_field = "canvas_id"
+    template_name = "canvasuser_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["courses"] = self.object.courses.all()
+        return context
 
 
-def view_courses(request):
-    sites = CanvasSite.objects.all()
-    sites = [{"site": site, "users": site.users.all()} for site in sites]
-    return render(request, "courses.html", {"sites": sites})
+class UserListView(ListView):
+    model = CanvasUser
+    paginate_by = 100
+    template_name = "canvasuser_list.html"
+
+
+class CourseDetailView(DetailView):
+    model = CanvasSite
+    template_name = "canvassite_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["users"] = self.object.users.all()
+        return context
+
+
+class CourseListView(ListView):
+    model = CanvasSite
+    paginate_by = 100
+    template_name = "canvassite_list.html"
