@@ -2,9 +2,24 @@
 
 ## Installation
 
+To install project dependencies, run:
+
 - `poetry install`
 
-# PostgreSQL
+### tmux
+
+The `make run` command requires tmux, which can be installed (on macOS) with:
+
+- `brew install tmux`
+
+#### Without tmux
+
+Without tmux, you will need to start tailwind and runserver manually:
+
+- Open a shell and run `poetry run python manage.py tailwind start`
+- Open a second shell and run `poetry run python manage.py runserver`
+
+### PostgreSQL
 
 _Instructions are based on macOS installation. Details may vary on your machine._
 

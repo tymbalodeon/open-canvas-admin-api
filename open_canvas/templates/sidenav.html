@@ -1,0 +1,79 @@
+{% url 'user-list' as users %}
+{% url 'course-list' as courses %}
+
+<div
+    class="
+           flex
+           flex-col
+           w-64
+           h-screen
+           px-4
+           py-8
+           bg-white
+           border-r
+           dark:bg-gray-800
+           dark:border-gray-600
+           "
+>
+    <h2 class="text-3xl font-semibold text-gray-800 dark:text-white text-center">
+        Open Canvas
+    </h2>
+    <div class="flex flex-col justify-between flex-1 mt-6">
+        <nav>
+            <a
+                class="
+                       flex
+                       items-center
+                       px-4
+                       py-2
+                       rounded-md
+                       mt-5
+                       {% if request.path == users %}
+                       text-gray-700
+                       bg-gray-200
+                       dark:bg-gray-700 dark:text-gray-200
+                       {% else %}
+                       text-gray-600
+                       transition-colors
+                       duration-200
+                       transform
+                       dark:text-gray-400
+                       hover:bg-gray-200
+                       dark:hover:bg-gray-700 dark:hover:text-gray-200
+                       hover:text-gray-700
+                       {% endif %}
+                       "
+                href={{ users }}
+            >
+                <span class="mx-4 font-medium">Users</span>
+            </a>
+            <a
+                class="
+                       flex
+                       items-center
+                       px-4
+                       py-2
+                       rounded-md
+                       mt-5
+                       {% if request.path == courses %}
+                       text-gray-700
+                       bg-gray-200
+                       dark:bg-gray-700 dark:text-gray-200
+                       {% else %}
+                       text-gray-600
+                       transition-colors
+                       duration-200
+                       transform
+                       dark:text-gray-400
+                       hover:bg-gray-200
+                       dark:hover:bg-gray-700 dark:hover:text-gray-200
+                       hover:text-gray-700
+                       {% endif %}
+                       "
+                href={{ courses }}
+            >
+                <span class="mx-4 font-medium">Courses</span>
+            </a>
+        </nav>
+    </div>
+</div>

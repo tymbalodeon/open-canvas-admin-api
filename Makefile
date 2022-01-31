@@ -39,7 +39,11 @@ mypy: ## Type-check code
 	$(POETRY) mypy ./
 
 run: ## Run the app
-	$(MANAGE) runserver
+	tmux new-session -d; \
+	tmux send-keys '$(MANAGE) tailwind start' C-m; \
+	tmux split-window -d '$(MANAGE) runserver'; \
+	tmux new-window; \
+	tmux attach
 
 shell: ## Open an app-aware python shell
 	$(MANAGE) shell_plus --bpython

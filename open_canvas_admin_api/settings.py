@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "open_canvas",
+    "tailwind",
+    "theme",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -74,6 +76,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = "/static/"
-if DEBUG and platform.system() == "Darwin":
-    lib_dir = Path.home() / LIB_DIR
-    cx_Oracle.init_oracle_client(lib_dir=str(lib_dir))
+INTERNAL_IPS = ["127.0.0.1"]
+TAILWIND_APP_NAME = "theme"
+if DEBUG:
+    INSTALLED_APPS.append("django_browser_reload")
+    MIDDLEWARE.append("django_browser_reload.middleware.BrowserReloadMiddleware")
+    if platform.system() == "Darwin":
+        lib_dir = Path.home() / LIB_DIR
+        cx_Oracle.init_oracle_client(lib_dir=str(lib_dir))

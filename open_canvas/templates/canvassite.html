@@ -1,8 +1,12 @@
-<li>
-    <a href="{% url "course-detail" site.canvas_id %}">
-        Course: {{ site }}
-    </a>
-    <ul>
+{% url 'course-list' as course_list %}
+
+<li class="py-4">
+    <h3 {%  if course_list not in request.path %}class="text-4xl font-medium leading-tight mt-0 mb-2 text-gray-800"{% endif %}>
+        <a href="{% url "course-detail" site.canvas_id %}" class="underline">
+            {{ site.name }}
+        </a>
+    </h3>
+    <ul class="px-8 py-4">
         <li>Canvas ID: {{ site.canvas_id }}</li>
         <li>Name: {{ site.name }}</li>
         <li>Course code: {{ site.course_code }}</li>
@@ -10,9 +14,9 @@
         <li>
             Enrollments:
             {% if site.users.all %}
-                <ul>
+                <ul class="px-8">
                     {% for user in site.users.all %}
-                        <a href="{% url "user-detail" user.canvas_id %}">
+                        <a href="{% url "user-detail" user.canvas_id %}" class="underline">
                             <li>{{ user }}</li>
                         </a>
                     {% endfor %}
