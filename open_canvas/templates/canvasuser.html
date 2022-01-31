@@ -1,13 +1,15 @@
 {% url 'user-list' as user_list %}
 
-<li class="py-4">
-    {% block user_header %}
-        <h3 {%  if user_list not in request.path %}class="text-4xl font-medium leading-tight mt-0 mb-2 text-gray-800"{% endif %}>
-            <a href="{% url "user-detail" user.canvas_id %}" class="underline">
-                {{ user.full_name }}
-            </a>
-        </h3>
-    {% endblock %}
+<li {% if user_list in request.path %} class="py-4" {% endif %}>
+    <h3
+        {% if user_list not in request.path %}
+            class="text-4xl font-medium leading-tight mt-0 mb-2 text-gray-800"
+        {% endif %}
+    >
+        <a href="{% url "user-detail" user.canvas_id %}" class="underline">
+            {{ user.full_name }}
+        </a>
+    </h3>
     <ul class="px-8 py-4">
         <li>First name: {{ user.first_name }}</li>
         <li>Last name: {{ user.last_name }}</li>

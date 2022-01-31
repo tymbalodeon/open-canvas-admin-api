@@ -39,6 +39,7 @@ mypy: ## Type-check code
 	$(POETRY) mypy ./
 
 run: ## Run the app
+	open "http://localhost:8000";
 	tmux new-session -d; \
 	tmux send-keys '$(MANAGE) tailwind start' C-m; \
 	tmux split-window -d '$(MANAGE) runserver'; \
