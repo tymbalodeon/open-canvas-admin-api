@@ -1,4 +1,4 @@
-from config.config import (
+from open_canvas.config.config import (
     DATA_WAREHOUSE_PASSWORD,
     DATA_WAREHOUSE_SERVICE,
     DATA_WAREHOUSE_USERNAME,

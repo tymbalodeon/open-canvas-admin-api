@@ -1,6 +1,6 @@
 from open_canvas.canvas.api import get_account
 
-from data_warehouse import get_data_warehouse_cursor
+from open_canvas.data_warehouse import get_data_warehouse_cursor
 
 
 def get_penn_id_from_penn_key(penn_key):
@@ -29,7 +29,7 @@ def email_in_use(user, email):
     return bool([channel for channel in channels if channel.address == email])
 
 
-def find_user_by_email(email, test=False):
+def get_user_by_email(email, test=False):
     account = get_account(test)
     users = [
         user
@@ -41,7 +41,7 @@ def find_user_by_email(email, test=False):
 
 def create_user(full_name, email, test=False):
     account = get_account(test)
-    user = find_user_by_email(account, email)
+    user = get_user_by_email(account, email)
     if user:
         return "already in use", user
     pseudonym = {"unique_id": email}
@@ -55,7 +55,7 @@ def create_user(full_name, email, test=False):
 
 def update_user_name(new_name, email, test=False):
     account = get_account(test)
-    user = find_user_by_email(account, email)
+    user = get_user_by_email(account, email)
     if not user:
         return "not found"
     else:
@@ -65,7 +65,7 @@ def update_user_name(new_name, email, test=False):
 
 def remove_user(email, test=False):
     account = get_account(test)
-    user = find_user_by_email(account, email)
+    user = get_user_by_email(account, email)
     if not user:
         return "not found"
     else:

@@ -1,3 +1,7 @@
+from operator import attrgetter
+
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.db.models import (
     CASCADE,
     CharField,
@@ -7,6 +11,9 @@ from django.db.models import (
     ManyToManyField,
     Model,
 )
+
+from open_canvas.canvas.api import get_canvas
+from open_canvas.canvas.users import get_user_by_email
 
 UNPUBLISHED = "UNPUBLISHED"
 AVAILABLE = "AVAILABLE"
@@ -46,6 +53,10 @@ class CanvasUser(Model):
     penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
     canvas_id = IntegerField(unique=True)
     courses = ManyToManyField(CanvasSite, related_name="users", blank=True)
+    PENN_PATH = "PENNPATH"
+    EMAIL = "email"
+    LOGIN_TYPES = [(PENN_PATH, "PennPath"), (EMAIL, "email")]
+    login_type = CharField(max_length=8, choices=LOGIN_TYPES, blank=True)
 
     def __str__(self):
         return f"{self.full_name} ({self.email})"
@@ -57,3 +68,18 @@ class CanvasUser(Model):
     @property
     def sortable_name(self):
         return f"{self.last_name}, {self.first_name}"
+
+    def sync_with_canvas(self):
+        canvas_user = get_canvas().get_user(get_user_by_email(self.email))
+        canvas_id, name, login_id = attrgetter("id", "name", "login_id")(canvas_user)
+        self.canvas_id = canvas_id
+        if name != self.full_name:
+            first_name, last_name = name.split()
+            self.first_name = first_name
+            self.last_name = last_name
+        try:
+            validate_email(login_id)
+            login_type = self.EMAIL
+        except ValidationError:
+            login_type = self.PENN_PATH
+        self.login_type = login_type

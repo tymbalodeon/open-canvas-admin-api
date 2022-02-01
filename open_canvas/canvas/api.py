@@ -1,5 +1,5 @@
 from canvasapi import Canvas
-from config.config import PROD_KEY, PROD_URL, TEST_KEY, TEST_URL
+from open_canvas.config.config import PROD_KEY, PROD_URL, TEST_KEY, TEST_URL
 
 from .constants import ACCOUNT
 
