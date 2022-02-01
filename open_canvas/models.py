@@ -69,6 +69,10 @@ class CanvasUser(Model):
     def sortable_name(self):
         return f"{self.last_name}, {self.first_name}"
 
+    @property
+    def login_id(self):
+        return self.penn_key if self.login_type == self.PENN_PATH else self.email
+
     def sync_with_canvas(self):
         canvas_user = get_canvas().get_user(get_user_by_email(self.email))
         canvas_id, name, login_id = attrgetter("id", "name", "login_id")(canvas_user)
