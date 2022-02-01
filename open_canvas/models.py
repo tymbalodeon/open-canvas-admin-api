@@ -83,3 +83,4 @@ class CanvasUser(Model):
         except ValidationError:
             login_type = self.PENN_PATH
         self.login_type = login_type
+        self.save()
