@@ -5,9 +5,9 @@ from open_canvas.data_warehouse import get_data_warehouse_cursor
 def get_first_and_last_names(name):
     names = name.split()
     if len(names) > 2:
-        return names.pop(0), " ".join(names)
+        return names[0], " ".join(names[1:])
     elif len(names) == 1:
-        names = names + "[MISSING]"
+        return names.pop(0), "[MISSING]"
     else:
         return names
 
