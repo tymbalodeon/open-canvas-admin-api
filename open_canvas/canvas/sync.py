@@ -56,11 +56,11 @@ def sync_courses(test=False, account=ACCOUNT):
             try:
                 user = canvas.get_user(enrollment.user_id)
             except ResourceDoesNotExist:
-                message = (
-                    "ERROR: user"
-                    f' "{enrollment.user["name"] if "name" in enrollment.user else ""}"'
-                    " not found"
+                missing_user_name = (
+                    f"{enrollment.user['name']} " if "name" in enrollment.user else ""
                 )
+                missing_user = f"{missing_user_name}({enrollment.user_id})"
+                message = f"ERROR: user {missing_user} not found"
                 print_item(enrollment_index, enrollment_total, message, prefix="\t*")
                 continue
             try:
