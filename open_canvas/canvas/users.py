@@ -6,6 +6,8 @@ def get_first_and_last_names(name):
     names = name.split()
     if len(names) > 2:
         return names.pop(0), " ".join(names)
+    elif len(names) == 1:
+        names = names + "[MISSING]"
     else:
         return names
 
