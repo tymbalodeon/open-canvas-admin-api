@@ -1,6 +1,7 @@
 from open_canvas.canvas.users import get_first_and_last_names
 from open_canvas.models import CanvasUser, Course, Enrollment, get_login_type
 from open_canvas.utils import print_item
+from canvasapi.exceptions import ResourceDoesNotExist
 
 from .api import get_canvas
 from .constants import ACCOUNT
@@ -52,13 +53,28 @@ def sync_courses(test=False, account=ACCOUNT):
         enrollment_total = len(enrollments)
         for enrollment_index, enrollment in enumerate(enrollments):
             user_object = None
-            user = canvas.get_user(enrollment.user_id)
+            try:
+                user = canvas.get_user(enrollment.user_id)
+            except ResourceDoesNotExist:
+                message = (
+                    "ERROR: user"
+                    f' "{enrollment.user["name"] if "name" in enrollment.user else ""}"'
+                    " not found"
+                )
+                print_item(enrollment_index, enrollment_total, message, prefix="\t*")
+                continue
             try:
                 user_object = CanvasUser.objects.get(email=user.email)
                 message = f'FOUND user "{user_object}"'
                 print_item(enrollment_index, enrollment_total, message, prefix="\t*")
             except CanvasUser.DoesNotExist:
                 if not user.email:
+                    message = (
+                        f'ERROR: missing email for Canvas user account for "{user}"'
+                    )
+                    print_item(
+                        enrollment_index, enrollment_total, message, prefix="\t*"
+                    )
                     continue
                 try:
                     first_name = user.first_name
