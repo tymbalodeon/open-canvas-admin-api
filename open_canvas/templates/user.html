@@ -16,15 +16,15 @@
         <li>Full name: {{ user.full_name }}</li>
         <li>Sortable name: {{ user.sortable_name }}</li>
         <li>Email: {{ user.email }}</li>
-        <li>Penn ID: {{ user.penn_id }}</li>
         <li>Pennkey: {{ user.penn_key }}</li>
+        <li>Login Type: {{ user.login_type }}</li>
         <li>
-            Courses:
-            {% if user.courses.all %}
+            Enrollments:
+            {% if user.enrollment_set.all %}
                 <ul class="px-8">
-                    {% for course in user.courses.all %}
-                        <a href="{% url "course-detail" course.canvas_id %}" class="underline">
-                            <li>{{ course }}</li>
+                    {% for enrollment in user.enrollment_set.all %}
+                        <a href="{% url "course-detail" enrollment.course.first.canvas_id %}" class="underline">
+                            <li>{{ enrollment.course.first }}</li>
                         </a>
                     {% endfor %}
                 </ul>

@@ -8,24 +8,23 @@ class UserDetailView(DetailView):
     model = CanvasUser
     context_object_name = "user"
     slug_field = "canvas_id"
-    template_name = "canvasuser_detail.html"
+    template_name = "user_detail.html"
 
 
 class UserListView(ListView):
     model = CanvasUser
     context_object_name = "users"
     paginate_by = 100
-    template_name = "canvasuser_list.html"
+    template_name = "user_list.html"
 
 
 class CourseDetailView(DetailView):
     model = Course
-    context_object_name = "site"
-    template_name = "canvassite_detail.html"
+    template_name = "course_detail.html"
 
 
 class CourseListView(ListView):
     model = Course
-    context_object_name = "sites"
+    context_object_name = "courses"
     paginate_by = 100
-    template_name = "canvassite_list.html"
+    template_name = "course_list.html"

@@ -1,0 +1,31 @@
+{% url 'course-list' as course_list %}
+
+<li {% if course_list in request.path %} class="py-4" {% endif %}>
+    <h3
+        {% if course_list not in request.path %}
+            class="text-4xl font-medium leading-tight mt-0 mb-2 text-gray-800"
+        {% endif %}
+    >
+        <a href="{% url "course-detail" course.canvas_id %}" class="underline">
+            {{ course.name }}
+        </a>
+    </h3>
+    <ul class="px-8 py-4">
+        <li>Canvas ID: {{ course.canvas_id }}</li>
+        <li>Name: {{ course.name }}</li>
+        <li>Course code: {{ course.course_code }}</li>
+        <li>Workflow state: {{ course.workflow_state }}</li>
+        <li>
+            Enrollments:
+            {% if course.enrollment_set.all %}
+                <ul class="px-8">
+                    {% for enrollment in course.enrollment_set.all %}
+                        <a href="{% url "user-detail" enrollment.user.canvas_id %}" class="underline">
+                            <li>{{ enrollment.user }}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    </ul>
+</li>
