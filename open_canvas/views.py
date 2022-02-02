@@ -1,7 +1,7 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from .models import Course, CanvasUser
+from .models import CanvasUser, Course
 
 
 class UserDetailView(DetailView):

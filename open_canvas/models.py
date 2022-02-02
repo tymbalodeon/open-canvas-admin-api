@@ -14,7 +14,7 @@ from django.db.models import (
 )
 
 from open_canvas.canvas.api import get_canvas
-from open_canvas.canvas.users import get_user_by_email
+from open_canvas.canvas.users import get_first_and_last_names, get_user_by_email
 
 UNPUBLISHED = "UNPUBLISHED"
 AVAILABLE = "AVAILABLE"
@@ -65,6 +65,14 @@ class Enrollment(Model):
     role = CharField(max_length=18, choices=ROLES)
 
 
+def get_login_type(login_id):
+    try:
+        validate_email(login_id)
+        return CanvasUser.EMAIL
+    except ValidationError:
+        return CanvasUser.PENN_PATH
+
+
 class CanvasUser(Model):
     PENN_PATH = "PENNPATH"
     EMAIL = "EMAIL"
@@ -72,7 +80,6 @@ class CanvasUser(Model):
     first_name = CharField(max_length=255)
     last_name = CharField(max_length=255)
     email = EmailField(primary_key=True)
-    penn_id = IntegerField(unique=True, blank=True, null=True)
     penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
     canvas_id = IntegerField(unique=True)
     enrollments = ManyToManyField(Enrollment, related_name="users", blank=True)
@@ -94,17 +101,12 @@ class CanvasUser(Model):
         return self.penn_key if self.login_type == self.PENN_PATH else self.email
 
     def sync_with_canvas(self):
-        canvas_user = get_canvas().get_user(get_user_by_email(self.email))
-        canvas_id, name, login_id = attrgetter("id", "name", "login_id")(canvas_user)
+        user = get_canvas().get_user(get_user_by_email(self.email))
+        canvas_id, name, login_id = attrgetter("id", "name", "login_id")(user)
         self.canvas_id = canvas_id
         if name != self.full_name:
-            first_name, last_name = name.split()
+            first_name, last_name = get_first_and_last_names(name)
             self.first_name = first_name
             self.last_name = last_name
-        try:
-            validate_email(login_id)
-            login_type = self.EMAIL
-        except ValidationError:
-            login_type = self.PENN_PATH
-        self.login_type = login_type
+        self.login_type = get_login_type(login_id)
         self.save()

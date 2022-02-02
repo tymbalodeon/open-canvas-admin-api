@@ -1,6 +1,9 @@
 from open_canvas.canvas.api import get_account
-
 from open_canvas.data_warehouse import get_data_warehouse_cursor
+
+
+def get_first_and_last_names(name):
+    return name.split()
 
 
 def get_penn_id_from_penn_key(penn_key):
