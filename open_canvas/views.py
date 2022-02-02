@@ -1,7 +1,7 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from .models import CanvasSite, CanvasUser
+from .models import Course, CanvasUser
 
 
 class UserDetailView(DetailView):
@@ -19,13 +19,13 @@ class UserListView(ListView):
 
 
 class CourseDetailView(DetailView):
-    model = CanvasSite
+    model = Course
     context_object_name = "site"
     template_name = "canvassite_detail.html"
 
 
 class CourseListView(ListView):
-    model = CanvasSite
+    model = Course
     context_object_name = "sites"
     paginate_by = 100
     template_name = "canvassite_list.html"

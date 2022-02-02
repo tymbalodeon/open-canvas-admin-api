@@ -10,6 +10,7 @@ from django.db.models import (
     IntegerField,
     ManyToManyField,
     Model,
+    OneToOneField,
 )
 
 from open_canvas.canvas.api import get_canvas
@@ -27,7 +28,7 @@ WORKFLOW_STATES = [
 ]
 
 
-class CanvasSite(Model):
+class Course(Model):
     canvas_id = IntegerField(primary_key=True)
     name = CharField(max_length=255)
     course_code = CharField(max_length=50, blank=True, null=True)
@@ -38,25 +39,44 @@ class CanvasSite(Model):
         return f'{course_code}"{self.name}" ({self.canvas_id})'
 
 
-class CanvasSection(Model):
+class Section(Model):
     canvas_id = IntegerField(primary_key=True)
     name = CharField(max_length=255)
-    course = ForeignKey(CanvasSite, on_delete=CASCADE, related_name="sections")
+    course = ForeignKey(Course, on_delete=CASCADE, related_name="sections")
     workflow_state = CharField(max_length=11, choices=WORKFLOW_STATES)
 
 
+class Enrollment(Model):
+    STUDENT = "STUDENT"
+    TEACHER = "TEACHER"
+    TA = "TA"
+    DESIGNER = "DESIGNER"
+    OBSERVER = "OBSERVER"
+    ROLES = [
+        (STUDENT, "StudentEnrollment"),
+        (TEACHER, "TeacherEnrollment"),
+        (TA, "TaEnrollment"),
+        (DESIGNER, "DesignerEnrollment"),
+        (OBSERVER, "ObserverEnrollment"),
+    ]
+    course = OneToOneField(Course, on_delete=CASCADE)
+    section = OneToOneField(Section, on_delete=CASCADE)
+    user = OneToOneField("CanvasUser", on_delete=CASCADE)
+    role = CharField(max_length=18, choices=ROLES)
+
+
 class CanvasUser(Model):
+    PENN_PATH = "PENNPATH"
+    EMAIL = "EMAIL"
+    LOGIN_TYPES = [(PENN_PATH, "PennPath"), (EMAIL, "email")]
     first_name = CharField(max_length=255)
     last_name = CharField(max_length=255)
     email = EmailField(primary_key=True)
     penn_id = IntegerField(unique=True, blank=True, null=True)
     penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
     canvas_id = IntegerField(unique=True)
-    courses = ManyToManyField(CanvasSite, related_name="users", blank=True)
-    PENN_PATH = "PENNPATH"
-    EMAIL = "email"
-    LOGIN_TYPES = [(PENN_PATH, "PennPath"), (EMAIL, "email")]
-    login_type = CharField(max_length=8, choices=LOGIN_TYPES, blank=True)
+    enrollments = ManyToManyField(Enrollment, related_name="users", blank=True)
+    login_type = CharField(max_length=8, choices=LOGIN_TYPES)
 
     def __str__(self):
         return f"{self.full_name} ({self.email})"

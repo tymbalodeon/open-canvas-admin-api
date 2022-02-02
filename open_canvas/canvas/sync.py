@@ -1,14 +1,14 @@
 from canvas.api import get_canvas
 from canvas.constants import ACCOUNT
 
-from open_canvas.models import CanvasSite
+from open_canvas.models import Course
 
 
 def sync_courses(test=False, account=ACCOUNT):
     account = get_canvas(test).get_account(account)
     courses = account.get_courses()
     for course in courses:
-        CanvasSite.objects.create(
+        Course.objects.create(
             canvas_id=course.id,
             name=course.name,
             course_code=course.sis_course_id,
