@@ -1,7 +1,8 @@
+from canvasapi.exceptions import ResourceDoesNotExist
+
 from open_canvas.canvas.users import get_first_and_last_names
 from open_canvas.models import CanvasUser, Course, Enrollment, get_login_type
 from open_canvas.utils import print_item
-from canvasapi.exceptions import ResourceDoesNotExist
 
 from .api import get_canvas
 from .constants import ACCOUNT
