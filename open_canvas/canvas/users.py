@@ -3,7 +3,11 @@ from open_canvas.data_warehouse import get_data_warehouse_cursor
 
 
 def get_first_and_last_names(name):
-    return name.split()
+    names = name.split()
+    if len(names) > 2:
+        return names.pop(0), " ".join(names)
+    else:
+        return names
 
 
 def get_penn_id_from_penn_key(penn_key):

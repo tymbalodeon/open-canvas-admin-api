@@ -1,8 +1,8 @@
-from canvas.api import get_canvas
-from canvas.constants import ACCOUNT
-
 from open_canvas.canvas.users import get_first_and_last_names
 from open_canvas.models import CanvasUser, Course, Enrollment, get_login_type
+
+from .api import get_canvas
+from .constants import ACCOUNT
 
 
 def sync_courses(test=False, account=ACCOUNT):
@@ -28,7 +28,11 @@ def sync_courses(test=False, account=ACCOUNT):
                 user = CanvasUser.objects.get(canvas_id=enrollment.user_id)
             except CanvasUser.DoesNotExist:
                 user = canvas.get_user(enrollment.user_id)
-                first_name, last_name = get_first_and_last_names(user.name)
+                try:
+                    first_name = user.first_name
+                    last_name = user.last_name
+                except Exception:
+                    first_name, last_name = get_first_and_last_names(user.name)
                 login_id = user.login_id
                 login_type = get_login_type(login_id)
                 user_data = {
@@ -41,7 +45,7 @@ def sync_courses(test=False, account=ACCOUNT):
                 if login_type == CanvasUser.PENN_PATH:
                     user_data["penn_key"] = login_id
                 try:
-                    user = CanvasUser.objects.create(user_data)[0]
+                    user = CanvasUser.objects.create(user_data)
                 except Exception:
                     print(f'- ERROR: failed to create user "{user}"')
                     continue

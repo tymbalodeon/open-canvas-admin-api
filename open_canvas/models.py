@@ -83,7 +83,7 @@ class CanvasUser(Model):
     penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
     canvas_id = IntegerField(unique=True)
     enrollments = ManyToManyField(Enrollment, related_name="users", blank=True)
-    login_type = CharField(max_length=8, choices=LOGIN_TYPES)
+    login_type = CharField(max_length=8, choices=LOGIN_TYPES, default=EMAIL)
 
     def __str__(self):
         return f"{self.full_name} ({self.email})"
