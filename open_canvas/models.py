@@ -10,7 +10,6 @@ from django.db.models import (
     IntegerField,
     ManyToManyField,
     Model,
-    OneToOneField,
 )
 
 from open_canvas.canvas.api import get_canvas
@@ -31,38 +30,40 @@ WORKFLOW_STATES = [
 class Course(Model):
     canvas_id = IntegerField(primary_key=True)
     name = CharField(max_length=255)
-    course_code = CharField(max_length=50, blank=True, null=True)
-    workflow_state = CharField(max_length=11, choices=WORKFLOW_STATES)
+    course_code = CharField(max_length=255, blank=True, null=True)
+    workflow_state = CharField(
+        max_length=11, choices=WORKFLOW_STATES, blank=True, null=True
+    )
+    course_section = ForeignKey(
+        "self", on_delete=CASCADE, blank=True, null=True, related_name="course"
+    )
 
     def __str__(self):
         course_code = f"{self.course_code} " if self.course_code else ""
         return f'{course_code}"{self.name}" ({self.canvas_id})'
 
 
-class Section(Model):
-    canvas_id = IntegerField(primary_key=True)
-    name = CharField(max_length=255)
-    course = ForeignKey(Course, on_delete=CASCADE, related_name="sections")
-    workflow_state = CharField(max_length=11, choices=WORKFLOW_STATES)
-
-
 class Enrollment(Model):
     STUDENT = "STUDENT"
+    STUDENT_VIEW = "STUDENT_VIEW"
     TEACHER = "TEACHER"
     TA = "TA"
     DESIGNER = "DESIGNER"
     OBSERVER = "OBSERVER"
     ROLES = [
         (STUDENT, "StudentEnrollment"),
+        (STUDENT_VIEW, "StudentViewEnrollment"),
         (TEACHER, "TeacherEnrollment"),
         (TA, "TaEnrollment"),
         (DESIGNER, "DesignerEnrollment"),
         (OBSERVER, "ObserverEnrollment"),
     ]
-    course = OneToOneField(Course, on_delete=CASCADE)
-    section = OneToOneField(Section, on_delete=CASCADE)
-    user = OneToOneField("CanvasUser", on_delete=CASCADE)
-    role = CharField(max_length=18, choices=ROLES)
+    course = ManyToManyField(Course)
+    course_section = ForeignKey(
+        Course, on_delete=CASCADE, blank=True, null=True, related_name="section"
+    )
+    user = ForeignKey("CanvasUser", on_delete=CASCADE)
+    role = CharField(max_length=21, choices=ROLES)
 
 
 def get_login_type(login_id):
@@ -80,7 +81,7 @@ class CanvasUser(Model):
     first_name = CharField(max_length=255)
     last_name = CharField(max_length=255)
     email = EmailField(primary_key=True)
-    penn_key = CharField(max_length=10, unique=True, blank=True, null=True)
+    penn_key = CharField(max_length=255, unique=True, blank=True, null=True)
     canvas_id = IntegerField(unique=True)
     enrollments = ManyToManyField(Enrollment, related_name="users", blank=True)
     login_type = CharField(max_length=8, choices=LOGIN_TYPES, default=EMAIL)
