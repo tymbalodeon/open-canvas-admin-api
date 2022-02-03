@@ -1,7 +1,7 @@
 from open_canvas.canvas.api import get_account, get_canvas
 
 from .constants import UNENROLL_TASKS
-from .users import find_user_by_email
+from .users import get_user_by_email
 
 COURSES_CACHE = {}
 
@@ -65,7 +65,7 @@ def get_enrollment_by_email(email, enrollments):
 
 
 def enroll_user(email, canvas_id, section, notify, test=False):
-    user = find_user_by_email(get_account(test), email)
+    user = get_user_by_email(get_account(test), email)
     canvas_section = get_canvas_section_or_course(canvas_id, section, test)
     if canvas_section == "course not found":
         return canvas_section, canvas_id, ""
