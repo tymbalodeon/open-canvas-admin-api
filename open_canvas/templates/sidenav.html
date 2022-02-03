@@ -2,20 +2,7 @@
 {% url 'course-list' as courses %}
 
 <div
-    class="
-           sticky
-           top-0
-           flex
-           flex-col
-           w-64
-           h-screen
-           px-4
-           py-8
-           bg-white
-           border-r
-           dark:bg-gray-800
-           dark:border-gray-600
-           "
+    class="sidenav"
 >
     <h2 class="text-3xl font-semibold text-gray-800 dark:text-white text-center">
         Open Canvas
@@ -23,26 +10,11 @@
     <div class="flex flex-col justify-between flex-1 mt-6">
         <nav>
             <a
-                class="
-                       flex
-                       items-center
-                       px-4
-                       py-2
-                       rounded-md
-                       mt-5
+                class="navlink
                        {% if request.path == users %}
-                       text-gray-700
-                       bg-gray-200
-                       dark:bg-gray-700 dark:text-gray-200
+                       active
                        {% else %}
-                       text-gray-600
-                       transition-colors
-                       duration-200
-                       transform
-                       dark:text-gray-400
-                       hover:bg-gray-200
-                       dark:hover:bg-gray-700 dark:hover:text-gray-200
-                       hover:text-gray-700
+                       inactive
                        {% endif %}
                        "
                 href={{ users }}
@@ -51,25 +23,11 @@
             </a>
             <a
                 class="
-                       flex
-                       items-center
-                       px-4
-                       py-2
-                       rounded-md
-                       mt-5
+                       navlink
                        {% if request.path == courses %}
-                       text-gray-700
-                       bg-gray-200
-                       dark:bg-gray-700 dark:text-gray-200
+                       active
                        {% else %}
-                       text-gray-600
-                       transition-colors
-                       duration-200
-                       transform
-                       dark:text-gray-400
-                       hover:bg-gray-200
-                       dark:hover:bg-gray-700 dark:hover:text-gray-200
-                       hover:text-gray-700
+                       inactive
                        {% endif %}
                        "
                 href={{ courses }}
